@@ -50,34 +50,132 @@
     </div>
   </nav>
   <div class="container">
-    <table class="table">
+    <table class="table table-bordered mt-5 text-center">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th>No</th>
+          <th>Calon Karyawan</th>
+          <th>Pengalaman Kerja</th>
+          <th>Pendidikan</th>
+          <th>Umur</th>
+          <th>Status</th>
+          <th>Alamat</th>
         </tr>
       </thead>
       <tbody>
+        @forelse ($employees as $employee)
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $employee->name }}</td>
+          <td>{{ $employee->pengalaman_kerja }}</td>
+          <td>{{ $employee->pendidikan }}</td>
+          <td>{{ $employee->umur }}</td>
+          <td>{{ $employee->status }}</td>
+          <td>{{ $employee->alamat }}</td>
         </tr>
+        @empty
+        <tr colspan="7">Data Not Available</tr>
+        @endforelse
         <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
+          <td colspan="2" class="text-center">R(ij)</td>
+          <td class="text-center">Max( {{ $maxPengalaman }} )</td>
+          <td class="text-center">Max( {{ $maxPendidikan }} )</td>
+          <td class="text-center">Max( {{ $maxUmur }} )</td>
+          <td class="text-center">min( {{ $minStatus }} )</td>
+          <td class="text-center">min( {{ $minAlamat }} )</td>
         </tr>
       </tbody>
+    </table>
+    <div class="mt-5">
+      <p>Bobot dari tiap Kriteria</p>
+    </div>
+    <table class="table table-bordered border-primary">
+      <thead class="text-center">
+        <th>Kriteria</th>
+        <th>Bobot</th>
+      </thead>
+      <tbody class="text-center">
+        <tr>
+          <td>Pengalaman Kerja</td>
+          <td>0.3</td>
+        </tr>
+        <tr>
+          <td>Pendidikan</td>
+          <td>0.2</td>
+        </tr>
+        <tr>
+          <td>Umur</td>
+          <td>0.2</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>0.15</td>
+        </tr>
+        <tr>
+          <td>Alamat</td>
+          <td>0.15</td>
+        </tr>
+        <tr class="text-bold">
+          <td>Total</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-5">
+      <p>Normalisasi Matriks</p>
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Calon Karyawan</th>
+          <th>Pengalaman Kerja</th>
+          <th>Pendidikan</th>
+          <th>Umur</th>
+          <th>Status</th>
+          <th>Alamat</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($employees as $employee)
+        <tr>
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $employee->name }}</td>
+          <td>{{ ($employee->pengalaman_kerja)/$maxPengalaman }}</td>
+          <td>{{ ($employee->pendidikan)/$maxPendidikan }}</td>
+          <td>{{ ($employee->umur / $maxUmur) }}</td>
+          <td>{{ $minStatus / $employee->status }}</td>
+          <td>{{ $minAlamat/$employee->alamat }}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+
+    <div class="mt-5">
+      Perhitungan Hasil
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Calon Karyawan</th>
+          <th>Hasil</th>
+        </tr>
+      </thead>
+      @foreach ($employees as $employee)
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $employee->name }}</td>
+        <td>
+          {{ (($employee->pengalaman_kerja/$maxPengalaman) * $bobot['pengalaman_kerja']) +
+          (($employee->pendidikan/$maxPendidikan) * $bobot['pendidikan']) +
+          (($employee->umur/$maxUmur) * $bobot['umur']) +
+          (($minStatus/$employee->status) * $bobot['status']) +
+          (($minAlamat/$employee->alamat) * $bobot['alamat']) }}
+        </td>
+      </tr>
+      @endforeach
     </table>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
