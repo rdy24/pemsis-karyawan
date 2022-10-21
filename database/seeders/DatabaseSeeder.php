@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             'alamat' => 0.7,
         ]);
         Employee::create([
-            'name' => 'A1',
+            'name' => 'A5',
             'pengalaman_kerja' => 1,
             'pendidikan' => 0.7,
             'umur' => 0.4,

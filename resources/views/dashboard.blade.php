@@ -97,27 +97,27 @@
       <tbody class="text-center">
         <tr>
           <td>Pengalaman Kerja</td>
-          <td>0.3</td>
+          <td>{{ $bobot['pengalaman_kerja'] }}</td>
         </tr>
         <tr>
           <td>Pendidikan</td>
-          <td>0.2</td>
+          <td>{{ $bobot['pendidikan'] }}</td>
         </tr>
         <tr>
           <td>Umur</td>
-          <td>0.2</td>
+          <td>{{ $bobot['umur'] }}</td>
         </tr>
         <tr>
           <td>Status</td>
-          <td>0.15</td>
+          <td>{{ $bobot['status'] }}</td>
         </tr>
         <tr>
           <td>Alamat</td>
-          <td>0.15</td>
+          <td>{{ $bobot['alamat'] }}</td>
         </tr>
         <tr class="text-bold">
           <td>Total</td>
-          <td>1</td>
+          <td>{{ $totalBobot }}</td>
         </tr>
       </tbody>
     </table>
@@ -138,15 +138,15 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($employees as $employee)
+        @foreach ($normalisasi as $data)
         <tr>
           <td>{{ $loop->iteration }}</td>
-          <td>{{ $employee->name }}</td>
-          <td>{{ ($employee->pengalaman_kerja)/$maxPengalaman }}</td>
-          <td>{{ ($employee->pendidikan)/$maxPendidikan }}</td>
-          <td>{{ ($employee->umur / $maxUmur) }}</td>
-          <td>{{ $minStatus / $employee->status }}</td>
-          <td>{{ $minAlamat/$employee->alamat }}</td>
+          <td>{{ $data['nama'] }}</td>
+          <td>{{ $data['pengalaman_kerja'] }}</td>
+          <td>{{ $data['pendidikan'] }}</td>
+          <td>{{ $data['umur'] }}</td>
+          <td>{{ $data['status'] }}</td>
+          <td>{{ $data['alamat'] }}</td>
         </tr>
         @endforeach
       </tbody>
@@ -158,25 +158,28 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>No</th>
+          <th>Rangking</th>
           <th>Calon Karyawan</th>
           <th>Hasil</th>
         </tr>
       </thead>
-      @foreach ($employees as $employee)
+      @foreach ($rangkingHasil as $item)
       <tr>
         <td>{{ $loop->iteration }}</td>
-        <td>{{ $employee->name }}</td>
+        <td>{{ $item['nama'] }}</td>
         <td>
-          {{ (($employee->pengalaman_kerja/$maxPengalaman) * $bobot['pengalaman_kerja']) +
-          (($employee->pendidikan/$maxPendidikan) * $bobot['pendidikan']) +
-          (($employee->umur/$maxUmur) * $bobot['umur']) +
-          (($minStatus/$employee->status) * $bobot['status']) +
-          (($minAlamat/$employee->alamat) * $bobot['alamat']) }}
+          {{ $item['hasil'] }}
         </td>
       </tr>
       @endforeach
     </table>
+    <div class="mt-5">
+      <p>Hasil Akhir</p>
+      @foreach ($kandidat as $item)
+
+      <p>Kandidat terbaik : {{ $item['nama'] }} dengan nilai {{ $item['hasil'] }}</p>
+      @endforeach
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">

@@ -22,6 +22,32 @@ class EmployeeController extends Controller
             'status' => 0.15,
             'alamat' => 0.15,
         ];
-        return view('dashboard', compact('employees', 'maxPengalaman', 'maxPendidikan', 'maxUmur', 'minStatus', 'minAlamat', 'bobot'));
+        $totalBobot = array_sum($bobot);
+        $normalisasi = [];
+        foreach ($employees as $employee) {
+            $normalisasi[] = [
+                'nama' => $employee->name,
+                'pengalaman_kerja' => $employee->pengalaman_kerja / $maxPengalaman,
+                'pendidikan' => $employee->pendidikan / $maxPendidikan,
+                'umur' => $employee->umur / $maxUmur,
+                'status' => $minStatus / $employee->status,
+                'alamat' => $minAlamat / $employee->alamat ,
+            ];
+        }
+        $hasil = [];
+        foreach ($normalisasi as $key => $value) {
+            $hasil[] = [
+                'nama' => $value['nama'],
+                'hasil' => $value['pengalaman_kerja'] * $bobot['pengalaman_kerja'] +
+                    $value['pendidikan'] * $bobot['pendidikan'] +
+                    $value['umur'] * $bobot['umur'] +
+                    $value['status'] * $bobot['status'] +
+                    $value['alamat'] * $bobot['alamat'],
+            ];
+        }
+        $rangkingHasil = collect($hasil)->sortByDesc('hasil')->toArray();
+        $kandidat = array_slice($rangkingHasil, 0, 1);
+        // dd($kandidat);
+        return view('dashboard', compact('employees', 'maxPengalaman', 'maxPendidikan', 'maxUmur', 'minStatus', 'minAlamat', 'bobot', 'normalisasi', 'hasil', 'rangkingHasil', 'totalBobot', 'kandidat'));
     }
 }
