@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Livewire\KaryawanComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/dashboard', [EmployeeController::class, 'index'])->name('dashboard');
+// Route::get('/dashboard', [EmployeeController::class, 'index'])->name('dashboard');
+
+Route::get('dashboard', KaryawanComponent::class);
