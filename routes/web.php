@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Livewire\KaryawanComponent;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,12 @@ Route::get('/', function () {
 });
 
 // Route::get('/dashboard', [EmployeeController::class, 'index'])->name('dashboard');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('dashboard', KaryawanComponent::class);
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+});
 
-Route::get('dashboard', KaryawanComponent::class);
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('login', [LoginController::class, 'index'])->name('login');
+    Route::post('login', [LoginController::class, 'login'])->name('login.process');
+});

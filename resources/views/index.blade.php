@@ -39,7 +39,8 @@
                     metode Simple Additiv Weighting. Perusahaan harus melaksanakan proses perekrutan dan seleksi
                     karyawan yang selektif sehingga sesuai dengan syarat kualifikasi dan kompetensi yang dibutuhkan oleh
                     perusahaan.</p>
-                <a href="/dashboard" class="btn btn-primary col-3" data-aos="fade-up" data-aos-delay="1200">Login</a>
+                <a href="{{ route('login') }}" class="btn btn-primary col-3" data-aos="fade-up"
+                    data-aos-delay="1200">Login</a>
             </div>
             <div class="col d-none d-sm-block mt-5">
                 <img src="image/undraw_Font_re_efri.png" class="img-fluid mt-5" data-aos="fade-left"
